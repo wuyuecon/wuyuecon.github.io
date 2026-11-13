@@ -15,8 +15,8 @@
   "paperDisplay": {
     "coauthors": true,
     "dates": false,
-    "status": true,
-    "abstracts": false
+    "status": false,
+    "abstracts": true
   },
   "publications": [],
   "papers": [
@@ -34,13 +34,14 @@
     {
       "id": "learning-where-to-search",
       "visible": true,
-      "title": "Learning Where to Search: Employer Feedback and the Direction of Job Search",
+      "title": "Employer Feedback and the Direction of Job Search",
+      "pdf": "papers/employer-feedback-job-search.pdf",
       "coauthors": "Jiayin Hu, Xincheng Qiu and Jieru Wang",
       "date": "",
       "status": "Working Paper",
       "topic": "Job search & learning",
       "summary": "High-frequency application data reveal how job seekers learn about their comparative advantage and move from broad exploration toward more targeted search.",
-      "abstract": "This paper studies how job seekers adapt their application strategies over the course of a search spell and how employer feedback shapes this process. Using high-frequency application data, we document three main findings. First, job seekers progressively concentrate their applications in a narrower set of submarkets as the spell proceeds and their rate of positive employer responses rises. Second, a positive employer response from an occupation increases subsequent applications to it. Third, this response is stronger for occupations in which workers lack prior experience. These findings support a learning view of job search in which applications generate information about workers’ comparative advantage, leading them to shift from broad exploration toward more targeted search."
+      "abstract": "We study how job seekers adjust application strategies over a search spell and in response to employer feedback. Using high-frequency application data, we document three findings. First, as a spell progresses, job seekers concentrate applications in fewer submarkets, while the positive-reply rate rises. Second, job seekers direct a larger share of subsequent applications toward occupations with higher positive-reply rates. Third, this reallocation is stronger for occupations in which job seekers lack prior experience. These findings suggest an adaptive search process in which job seekers learn about their relative prospects across submarkets from employer feedback and redirect applications accordingly."
     }
   ],
   "education": [

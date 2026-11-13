@@ -23,8 +23,8 @@
 "paperDisplay": {
   "coauthors": true,
   "dates": false,
-  "status": true,
-  "abstracts": false
+  "status": false,
+  "abstracts": true
 }
 ```
 
@@ -32,14 +32,16 @@
 |---|---|---|
 | `coauthors` | 合作者 | 显示 |
 | `dates` | 日期 | 隐藏 |
-| `status` | Working Paper、发表期刊或其他状态 | 显示 |
-| `abstracts` | 摘要 | 隐藏 |
+| `status` | Working Paper、发表期刊或其他状态 | 隐藏 |
+| `abstracts` | 可点击的 Abstract 按钮 | 显示按钮，摘要默认收起 |
 
 `true` 表示显示，`false` 表示隐藏。使用小写，**不要加引号**。这些开关同时控制 Working Papers 和 Publications。标题始终显示；字段内容为空时也不显示。
 
 例如，想显示日期，需要把 `dates` 改成 `true`，同时给相应论文填写 `"date": "October 2026"`。不想公开某个字段，也可以将该论文的字段内容设为 `""`。
 
-目前两篇论文都设为 **Working Paper**，日期留空且开关关闭；Home 不展示论文列表或独立 Education 板块。
+两篇论文的数据中保留 **Working Paper** 状态，但网页不显示状态或日期。Working Papers 页也不显示研究方向标签；Home 仍展示研究方向，不展示论文列表或独立 Education 板块。
+
+`abstracts: true` 会显示 Abstract 按钮，访客点击展开，再点击收起，不会默认展开。
 
 ## 选择展示哪些论文
 
@@ -65,6 +67,7 @@ Working Papers 的条目保存在 `papers` 数组中。每篇都有：
   "coauthors": "Coauthor A and Coauthor B",
   "date": "",
   "status": "Working Paper",
+  "pdf": "",
   "abstract": ""
 }
 ```
@@ -73,7 +76,19 @@ Working Papers 的条目保存在 `papers` 数组中。每篇都有：
 - `coauthors` 只填写合作者姓名，不含自己，不必写 `with`；没有合作者时留空。
 - `status` 可以填写确认过的投稿状态、期刊或发表信息；不用显示时留空，避免填入未经确认的状态。
 - 不填日期就保留 `"date": ""`，不要填写占位日期。
-- 当前没有上传论文全文，也没有为标题设置下载链接。
+- 第二篇已提供独立 PDF 下载链接，标题保持普通文字。
+
+## 添加或更新论文 PDF
+
+第二篇文件为 `docs/papers/employer-feedback-job-search.pdf`，与用户指定的 `AER Submission/paper.pdf` 原文件一致。更新稿件时，用新版 PDF 替换此文件，然后预览并上传；只修改研究目录中的原稿，不会自动更新网站副本。
+
+给其他论文添加下载链接时，将 PDF 复制到 `docs/papers/`，再在对应论文条目中填写：
+
+```json
+"pdf": "papers/your-paper.pdf"
+```
+
+路径相对于 `docs`，不要填写 `E:\\...` 本机绝对路径。文件不存在时，生成会报错并停止上传。删掉 `pdf` 字段或设为 `""` 可隐藏下载链接。PDF 链接带有下载属性，访客点击后可直接保存文件。
 
 ## 添加 Publications
 

@@ -80,15 +80,23 @@ def paper_entry(p):
     metadata = ''.join(f'<span class="paper-{key}">{e(p[key])}</span>' for key, setting, default in [('date', 'dates', False), ('status', 'status', True)] if display.get(setting, default) and p.get(key))
     metadata = f'<p class="paper-metadata">{metadata}</p>' if metadata else ''
     coauthors = f'<p class="coauthors">(with {e(p["coauthors"])})</p>' if display.get('coauthors', True) and p.get('coauthors') else ''
-    abstract = f'<p class="paper-abstract">{e(p["abstract"])}</p>' if display.get('abstracts', False) and p.get('abstract') else ''
-    return f'''<article class="paper-record" id="{e(p['id'])}" aria-labelledby="title-{e(p['id'])}"><h2 id="title-{e(p['id'])}">{e(p['title'])}</h2>{coauthors}{metadata}{abstract}</article>'''
+    abstract = f'<details class="paper-abstract-toggle"><summary>Abstract <span class="details-symbol" aria-hidden="true"></span></summary><p class="paper-abstract">{e(p["abstract"])}</p></details>' if display.get('abstracts', False) and p.get('abstract') else ''
+    pdf = ''
+    if p.get('pdf'):
+        pdf_path = Path(p['pdf'])
+        target = (OUT / pdf_path).resolve()
+        if pdf_path.is_absolute() or not target.is_relative_to(OUT.resolve()) or not target.is_file() or target.suffix.lower() != '.pdf':
+            raise ValueError(f"Paper PDF must exist inside docs/: {p['pdf']}")
+        pdf = f'<a class="paper-pdf" href="{e(pdf_path.as_posix())}" download aria-label="Download {e(p["title"])} (PDF)">PDF <span aria-hidden="true">↓</span></a>'
+    actions = f'<div class="paper-actions">{pdf}{abstract}</div>' if pdf or abstract else ''
+    return f'''<article class="paper-record" id="{e(p['id'])}" aria-labelledby="title-{e(p['id'])}"><h2 id="title-{e(p['id'])}">{e(p['title'])}</h2>{coauthors}{metadata}{actions}</article>'''
 
 def visible_papers(key):
     return [p for p in DATA.get(key, []) if p.get('visible', True)]
 
 def working_papers():
     papers = ''.join(paper_entry(p) for p in visible_papers('papers'))
-    return f'''<div class="wrap inner-page research-list-page"><section class="page-intro" aria-labelledby="research-heading"><p class="eyebrow">Yu Wu / Research</p><h1 id="research-heading">Working Papers</h1>{research_fields()}</section><section class="paper-records" aria-label="Working paper list">{papers}</section></div>'''
+    return f'''<div class="wrap inner-page research-list-page"><section class="page-intro" aria-labelledby="research-heading"><p class="eyebrow">Yu Wu / Research</p><h1 id="research-heading">Working Papers</h1></section><section class="paper-records" aria-label="Working paper list">{papers}</section></div>'''
 
 def publications():
     papers = ''.join(paper_entry(p) for p in visible_papers('publications'))

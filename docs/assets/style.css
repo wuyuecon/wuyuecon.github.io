@@ -121,6 +121,11 @@ details[open] .details-symbol::after{transform:rotate(0)}
 .paper-date{color:var(--muted)}
 .paper-status{color:var(--accent)}
 .paper-abstract{font-size:14px;line-height:1.9;color:var(--muted);margin-top:17px;max-width:960px}
+.paper-actions{display:flex;align-items:flex-start;gap:18px;margin-top:12px}
+.paper-pdf{display:inline-flex;align-items:center;gap:9px;min-height:44px;flex-shrink:0;color:var(--accent);font-size:12px}
+.paper-actions .paper-abstract-toggle{flex:1;min-width:0;margin:0}
+.paper-abstract-toggle summary{width:118px;min-height:44px}
+.paper-abstract-toggle .paper-abstract{margin-top:11px}
 .page-home .profile{min-height:calc(100vh - 201px);align-content:center}
 .research-list-page{min-height:calc(100vh - 201px)}
 @media(max-width:760px){.paper-record{padding:24px 0}.paper-record h2{font-size:23px}.paper-record .coauthors{font-size:13px}.research-list-page{min-height:calc(100vh - 225px)}}
