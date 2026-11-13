@@ -6,6 +6,8 @@ Website: https://wuyuecon.github.io/
 
 网站导航为 **Home / Working Papers / Publications**。CV 下载保留在 Home。Publications 当前暂留空，待站主提供已发表论文后补充。
 
+Home 不展示论文列表。Working Papers 只显示标题、合作者、日期和状态，不展示图表或摘要。在 `site-data.json` 对应论文中修改 `date` 和 `status`；尚未确认的日期留空，网页不会生成占位日期。未提供论文下载链接时，标题以普通文字展示。
+
 ## 本地修改与预览
 
 1. 编辑 `site-data.json`：个人简介、研究方向、论文、摘要、教育和教学经历。

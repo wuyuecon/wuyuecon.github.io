@@ -56,7 +56,6 @@ def education_rows():
     return ''.join(f'''<div class="record"><div><h3>{e(x['degree'])}</h3><p>{e(DATA['department'])}<br>{e(DATA['university'])}</p>{f"<p class='record-note'>{e(x['detail'])}</p>" if x['detail'] else ''}</div><p class="record-date">{e(x['dates'])}</p></div>''' for x in DATA['education'])
 
 def home():
-    papers = ''.join(f'''<article class="paper-preview"><span class="paper-index">{i:02d}</span><div><h3><a href="working-papers.html#{e(p['id'])}">{e(p['title'])}</a></h3><p class="coauthors">with {e(p['coauthors'])}</p><p class="paper-summary">{e(p['summary'])}</p></div><a class="row-arrow" href="working-papers.html#{e(p['id'])}" aria-label="Read about {e(p['title'])}">{RIGHT}</a></article>''' for i,p in enumerate(DATA['papers'],1))
     bio = ''.join(f'<p>{e(x)}</p>' for x in DATA['bio'])
     return f'''
 <section class="profile wrap" aria-labelledby="profile-heading">
@@ -65,7 +64,7 @@ def home():
     <h1 id="profile-heading">Yu Wu <span lang="zh-Hans">吴裕</span></h1>
     <p class="position">PhD Candidate in Economics</p>
     <div class="biography">{bio}</div>
-    <div class="profile-actions"><a class="button" href="{CV}" target="_blank" rel="noopener">View CV <span class="button-note">PDF</span> {ARROW}</a><a class="text-link" href="working-papers.html">View working papers {RIGHT}</a></div>
+    <div class="profile-actions"><a class="button" href="{CV}" target="_blank" rel="noopener">View CV <span class="button-note">PDF</span> {ARROW}</a></div>
   </div>
   <aside class="profile-aside" aria-label="Academic profile">
     <div class="aside-heading"><span class="tiny-square" aria-hidden="true"></span> Academic profile</div>
@@ -77,16 +76,16 @@ def home():
     </dl>
   </aside>
 </section>
-<section class="research-overview wrap" aria-labelledby="working-heading">
-  <div class="section-heading"><div><p class="eyebrow">Research</p><h2 id="working-heading">Working papers</h2></div><a class="text-link" href="working-papers.html">View all papers {RIGHT}</a></div>
-  <div class="paper-list">{papers}</div>
-</section>
 <section class="home-education wrap" aria-labelledby="education-heading"><div class="section-heading"><div><p class="eyebrow">Background</p><h2 id="education-heading">Education</h2></div><a class="text-link" href="{CV}" target="_blank" rel="noopener">Full CV (PDF) {ARROW}</a></div>{education_rows()}</section>
 '''
 
+def paper_entry(p):
+    metadata = ''.join(f'<span class="paper-{key}">{e(p[key])}</span>' for key in ['date', 'status'] if p.get(key))
+    return f'''<article class="paper-record" id="{e(p['id'])}" aria-labelledby="title-{e(p['id'])}"><h2 id="title-{e(p['id'])}">{e(p['title'])}</h2><p class="coauthors">(with {e(p['coauthors'])})</p><p class="paper-metadata">{metadata}</p></article>'''
+
 def working_papers():
-    papers = ''.join(f'''<article class="paper-full" id="{e(p['id'])}" aria-labelledby="title-{e(p['id'])}"><div class="paper-margin"><span class="paper-index">{i:02d}</span><span class="paper-type">Working paper</span></div><div class="paper-body"><p class="eyebrow topic">{e(p['topic'])}</p><h2 id="title-{e(p['id'])}">{e(p['title'])}</h2><p class="coauthors">with {e(p['coauthors'])}</p><p class="paper-lead">{e(p['summary'])}</p><details><summary><span>Read abstract</span><span class="details-symbol" aria-hidden="true"></span></summary><div class="abstract"><p>{e(p['abstract'])}</p></div></details></div></article>''' for i,p in enumerate(DATA['papers'],1))
-    return f'''<div class="wrap inner-page"><section class="page-intro" aria-labelledby="research-heading"><p class="eyebrow">Yu Wu / Research</p><h1 id="research-heading">Working Papers</h1><p class="page-deck">My work studies labor markets, migration, and the Chinese economy.</p>{research_fields()}</section><section class="working-section" aria-labelledby="papers-heading"><div class="section-heading compact"><h2 id="papers-heading">Working papers</h2><span class="count">{len(DATA['papers']):02d}</span></div>{papers}</section><div class="contact-strip"><p>For questions about my research, please get in touch.</p><a class="text-link" href="mailto:{e(DATA['email'])}">Email me {ARROW}</a></div></div>'''
+    papers = ''.join(paper_entry(p) for p in DATA['papers'])
+    return f'''<div class="wrap inner-page research-list-page"><section class="page-intro" aria-labelledby="research-heading"><p class="eyebrow">Yu Wu / Research</p><h1 id="research-heading">Working Papers</h1>{research_fields()}</section><section class="paper-records" aria-label="Working paper list">{papers}</section></div>'''
 
 def publications():
     return f'''<div class="wrap inner-page publications-page"><section class="page-intro" aria-labelledby="publications-heading"><p class="eyebrow">Yu Wu / Research</p><h1 id="publications-heading">Publications</h1></section><section class="publication-empty" aria-label="Publication list"><p>No publications listed yet.</p><a class="text-link" href="working-papers.html">View working papers {RIGHT}</a></section></div>'''
