@@ -77,30 +77,28 @@ def home():
 
 def paper_entry(p):
     display = DATA.get('paperDisplay', {})
-    metadata = ''.join(f'<span class="paper-{key}">{e(p[key])}</span>' for key, setting, default in [('date', 'dates', False), ('status', 'status', True)] if display.get(setting, default) and p.get(key))
-    metadata = f'<p class="paper-metadata">{metadata}</p>' if metadata else ''
-    coauthors = f'<p class="coauthors">(with {e(p["coauthors"])})</p>' if display.get('coauthors', True) and p.get('coauthors') else ''
-    abstract = f'<details class="paper-abstract-toggle"><summary>Abstract <span class="details-symbol" aria-hidden="true"></span></summary><p class="paper-abstract">{e(p["abstract"])}</p></details>' if display.get('abstracts', False) and p.get('abstract') else ''
-    pdf = ''
+    fields = [p[key] for key, setting, default in [('date', 'dates', False), ('status', 'status', True)] if display.get(setting, default) and p.get(key)]
+    metadata = f' <span class="paper-metadata-inline">({e(", ".join(fields))})</span>' if fields else ''
+    coauthors = f' <span class="paper-coauthors">(with {e(p["coauthors"])})</span>' if display.get('coauthors', True) and p.get('coauthors') else ''
+    title = f'<span class="paper-title-plain">{e(p["title"])}</span>'
     if p.get('pdf'):
         pdf_path = Path(p['pdf'])
         target = (OUT / pdf_path).resolve()
         if pdf_path.is_absolute() or not target.is_relative_to(OUT.resolve()) or not target.is_file() or target.suffix.lower() != '.pdf':
             raise ValueError(f"Paper PDF must exist inside docs/: {p['pdf']}")
-        pdf = f'<a class="paper-pdf" href="{e(pdf_path.as_posix())}" download aria-label="Download {e(p["title"])} (PDF)">PDF <span aria-hidden="true">↓</span></a>'
-    actions = f'<div class="paper-actions">{pdf}{abstract}</div>' if pdf or abstract else ''
-    return f'''<article class="paper-record" id="{e(p['id'])}" aria-labelledby="title-{e(p['id'])}"><h2 id="title-{e(p['id'])}">{e(p['title'])}</h2>{coauthors}{metadata}{actions}</article>'''
+        title = f'<a class="paper-title" href="{e(pdf_path.as_posix())}" download>{e(p["title"])}</a>'
+    return f'<li class="paper-entry" id="{e(p["id"])}">{title}{coauthors}{metadata}</li>'
 
 def visible_papers(key):
     return [p for p in DATA.get(key, []) if p.get('visible', True)]
 
 def working_papers():
     papers = ''.join(paper_entry(p) for p in visible_papers('papers'))
-    return f'''<div class="wrap inner-page research-list-page"><section class="page-intro" aria-labelledby="research-heading"><p class="eyebrow">Yu Wu / Research</p><h1 id="research-heading">Working Papers</h1></section><section class="paper-records" aria-label="Working paper list">{papers}</section></div>'''
+    return f'''<div class="wrap inner-page research-list-page"><section class="page-intro" aria-labelledby="research-heading"><h1 id="research-heading">Working Papers</h1></section><ol class="paper-list-compact" aria-label="Working paper list">{papers}</ol></div>'''
 
 def publications():
     papers = ''.join(paper_entry(p) for p in visible_papers('publications'))
-    content = f'<section class="paper-records" aria-label="Publication list">{papers}</section>' if papers else f'<section class="publication-empty" aria-label="Publication list"><p>No publications listed yet.</p><a class="text-link" href="working-papers.html">View working papers {RIGHT}</a></section>'
+    content = f'<ol class="paper-list-compact" aria-label="Publication list">{papers}</ol>' if papers else f'<section class="publication-empty" aria-label="Publication list"><p>No publications listed yet.</p><a class="text-link" href="working-papers.html">View working papers {RIGHT}</a></section>'
     return f'''<div class="wrap inner-page publications-page"><section class="page-intro" aria-labelledby="publications-heading"><p class="eyebrow">Yu Wu / Research</p><h1 id="publications-heading">Publications</h1></section>{content}</div>'''
 
 PAGES = {

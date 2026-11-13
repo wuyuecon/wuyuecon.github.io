@@ -23,8 +23,7 @@
 "paperDisplay": {
   "coauthors": true,
   "dates": false,
-  "status": false,
-  "abstracts": true
+  "status": false
 }
 ```
 
@@ -33,7 +32,6 @@
 | `coauthors` | 合作者 | 显示 |
 | `dates` | 日期 | 隐藏 |
 | `status` | Working Paper、发表期刊或其他状态 | 隐藏 |
-| `abstracts` | 可点击的 Abstract 按钮 | 显示按钮，摘要默认收起 |
 
 `true` 表示显示，`false` 表示隐藏。使用小写，**不要加引号**。这些开关同时控制 Working Papers 和 Publications。标题始终显示；字段内容为空时也不显示。
 
@@ -41,7 +39,7 @@
 
 两篇论文的数据中保留 **Working Paper** 状态，但网页不显示状态或日期。Working Papers 页也不显示研究方向标签；Home 仍展示研究方向，不展示论文列表或独立 Education 板块。
 
-`abstracts: true` 会显示 Abstract 按钮，访客点击展开，再点击收起，不会默认展开。
+论文使用紧凑的编号列表，标题后直接接合作者。网页不提供 Abstract、独立 PDF 按钮或箭头；有 `pdf` 文件的论文，点击标题即可下载，没有 `pdf` 的论文标题为普通文字。
 
 ## 选择展示哪些论文
 
@@ -57,7 +55,7 @@ Working Papers 的条目保存在 `papers` 数组中。每篇都有：
 
 ## 增加或修改一篇论文
 
-找到 `papers` 中对应的条目，修改 `title`、`coauthors`、`date`、`status` 和 `abstract`。也可以在数组内添加一个新条目，结构如下（示例内容需替换为自己的信息）：
+找到 `papers` 中对应的条目，修改 `title`、`coauthors`、`date`、`status` 和 `pdf`。也可以在数组内添加一个新条目，结构如下（示例内容需替换为自己的信息）：
 
 ```json
 {
@@ -67,8 +65,7 @@ Working Papers 的条目保存在 `papers` 数组中。每篇都有：
   "coauthors": "Coauthor A and Coauthor B",
   "date": "",
   "status": "Working Paper",
-  "pdf": "",
-  "abstract": ""
+  "pdf": ""
 }
 ```
 
@@ -76,7 +73,8 @@ Working Papers 的条目保存在 `papers` 数组中。每篇都有：
 - `coauthors` 只填写合作者姓名，不含自己，不必写 `with`；没有合作者时留空。
 - `status` 可以填写确认过的投稿状态、期刊或发表信息；不用显示时留空，避免填入未经确认的状态。
 - 不填日期就保留 `"date": ""`，不要填写占位日期。
-- 第二篇已提供独立 PDF 下载链接，标题保持普通文字。
+- 第二篇的标题已经链接到 PDF。第一篇尚未提供全文，因此保留普通文字标题。
+- 原有 `abstract`、`summary`、`topic` 字段仅保留资料，当前页面不展示它们。
 
 ## 添加或更新论文 PDF
 
@@ -88,7 +86,7 @@ Working Papers 的条目保存在 `papers` 数组中。每篇都有：
 "pdf": "papers/your-paper.pdf"
 ```
 
-路径相对于 `docs`，不要填写 `E:\\...` 本机绝对路径。文件不存在时，生成会报错并停止上传。删掉 `pdf` 字段或设为 `""` 可隐藏下载链接。PDF 链接带有下载属性，访客点击后可直接保存文件。
+路径相对于 `docs`，不要填写 `E:\\...` 本机绝对路径。文件不存在时，生成会报错并停止上传。删掉 `pdf` 字段或设为 `""` 可将标题改回普通文字；论文条目仍保留。标题链接带有下载属性，访客点击标题后可直接保存文件。
 
 ## 添加 Publications
 

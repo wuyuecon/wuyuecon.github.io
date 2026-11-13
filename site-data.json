@@ -15,8 +15,7 @@
   "paperDisplay": {
     "coauthors": true,
     "dates": false,
-    "status": false,
-    "abstracts": true
+    "status": false
   },
   "publications": [],
   "papers": [
