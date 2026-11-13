@@ -4,7 +4,7 @@ from html import escape
 import json
 
 ROOT = Path(__file__).resolve().parent
-OUT = ROOT / 'dist'
+OUT = ROOT / 'docs'
 DATA = json.loads((ROOT / 'site-data.json').read_text(encoding='utf-8'))
 OUT.mkdir(exist_ok=True)
 
