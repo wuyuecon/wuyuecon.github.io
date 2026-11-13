@@ -52,9 +52,6 @@ def frame(page, title, description, content):
 def research_fields():
     return '<ul class="field-list">' + ''.join(f'<li>{e(x)}</li>' for x in DATA['interests']) + '</ul>'
 
-def education_rows():
-    return ''.join(f'''<div class="record"><div><h3>{e(x['degree'])}</h3><p>{e(DATA['department'])}<br>{e(DATA['university'])}</p>{f"<p class='record-note'>{e(x['detail'])}</p>" if x['detail'] else ''}</div><p class="record-date">{e(x['dates'])}</p></div>''' for x in DATA['education'])
-
 def home():
     bio = ''.join(f'<p>{e(x)}</p>' for x in DATA['bio'])
     return f'''
@@ -76,19 +73,27 @@ def home():
     </dl>
   </aside>
 </section>
-<section class="home-education wrap" aria-labelledby="education-heading"><div class="section-heading"><div><p class="eyebrow">Background</p><h2 id="education-heading">Education</h2></div><a class="text-link" href="{CV}" target="_blank" rel="noopener">Full CV (PDF) {ARROW}</a></div>{education_rows()}</section>
 '''
 
 def paper_entry(p):
-    metadata = ''.join(f'<span class="paper-{key}">{e(p[key])}</span>' for key in ['date', 'status'] if p.get(key))
-    return f'''<article class="paper-record" id="{e(p['id'])}" aria-labelledby="title-{e(p['id'])}"><h2 id="title-{e(p['id'])}">{e(p['title'])}</h2><p class="coauthors">(with {e(p['coauthors'])})</p><p class="paper-metadata">{metadata}</p></article>'''
+    display = DATA.get('paperDisplay', {})
+    metadata = ''.join(f'<span class="paper-{key}">{e(p[key])}</span>' for key, setting, default in [('date', 'dates', False), ('status', 'status', True)] if display.get(setting, default) and p.get(key))
+    metadata = f'<p class="paper-metadata">{metadata}</p>' if metadata else ''
+    coauthors = f'<p class="coauthors">(with {e(p["coauthors"])})</p>' if display.get('coauthors', True) and p.get('coauthors') else ''
+    abstract = f'<p class="paper-abstract">{e(p["abstract"])}</p>' if display.get('abstracts', False) and p.get('abstract') else ''
+    return f'''<article class="paper-record" id="{e(p['id'])}" aria-labelledby="title-{e(p['id'])}"><h2 id="title-{e(p['id'])}">{e(p['title'])}</h2>{coauthors}{metadata}{abstract}</article>'''
+
+def visible_papers(key):
+    return [p for p in DATA.get(key, []) if p.get('visible', True)]
 
 def working_papers():
-    papers = ''.join(paper_entry(p) for p in DATA['papers'])
+    papers = ''.join(paper_entry(p) for p in visible_papers('papers'))
     return f'''<div class="wrap inner-page research-list-page"><section class="page-intro" aria-labelledby="research-heading"><p class="eyebrow">Yu Wu / Research</p><h1 id="research-heading">Working Papers</h1>{research_fields()}</section><section class="paper-records" aria-label="Working paper list">{papers}</section></div>'''
 
 def publications():
-    return f'''<div class="wrap inner-page publications-page"><section class="page-intro" aria-labelledby="publications-heading"><p class="eyebrow">Yu Wu / Research</p><h1 id="publications-heading">Publications</h1></section><section class="publication-empty" aria-label="Publication list"><p>No publications listed yet.</p><a class="text-link" href="working-papers.html">View working papers {RIGHT}</a></section></div>'''
+    papers = ''.join(paper_entry(p) for p in visible_papers('publications'))
+    content = f'<section class="paper-records" aria-label="Publication list">{papers}</section>' if papers else f'<section class="publication-empty" aria-label="Publication list"><p>No publications listed yet.</p><a class="text-link" href="working-papers.html">View working papers {RIGHT}</a></section>'
+    return f'''<div class="wrap inner-page publications-page"><section class="page-intro" aria-labelledby="publications-heading"><p class="eyebrow">Yu Wu / Research</p><h1 id="publications-heading">Publications</h1></section>{content}</div>'''
 
 PAGES = {
     'index.html': ('home', 'Yu Wu | Economics · Peking University', 'Yu Wu (吴裕) is a PhD Candidate in Economics at Peking University. Research interests: Macro Labor and China Economy.', home()),

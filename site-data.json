@@ -8,13 +8,21 @@
   "advisor": "Bo Zhao",
   "interests": ["Macro Labor", "China Economy"],
   "bio": [
-    "I am a PhD candidate in Economics at the National School of Development, Peking University, advised by Bo Zhao.",
+    "I am a PhD candidate in Economics at the National School of Development, Peking University, advised by Bo Zhao. I received my BA in Economics from Peking University in 2023.",
     "My research interests are in macro labor and the Chinese economy. My current work studies rural–urban migration, access to public benefits, and how job seekers learn from employer feedback."
   ],
   "cvUpdated": "September 2026",
+  "paperDisplay": {
+    "coauthors": true,
+    "dates": false,
+    "status": true,
+    "abstracts": false
+  },
+  "publications": [],
   "papers": [
     {
       "id": "labor-mobility",
+      "visible": true,
       "title": "Labor Mobility under Partial Citizenship: Welfare Effects of China’s Rural–Urban Migration",
       "coauthors": "Xuan Wang and Bo Zhao",
       "date": "",
@@ -25,6 +33,7 @@
     },
     {
       "id": "learning-where-to-search",
+      "visible": true,
       "title": "Learning Where to Search: Employer Feedback and the Direction of Job Search",
       "coauthors": "Jiayin Hu, Xincheng Qiu and Jieru Wang",
       "date": "",

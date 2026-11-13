@@ -120,8 +120,11 @@ details[open] .details-symbol::after{transform:rotate(0)}
 .paper-metadata{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:12px;line-height:1.7;margin-top:10px}
 .paper-date{color:var(--muted)}
 .paper-status{color:var(--accent)}
+.paper-abstract{font-size:14px;line-height:1.9;color:var(--muted);margin-top:17px;max-width:960px}
+.page-home .profile{min-height:calc(100vh - 201px);align-content:center}
 .research-list-page{min-height:calc(100vh - 201px)}
 @media(max-width:760px){.paper-record{padding:24px 0}.paper-record h2{font-size:23px}.paper-record .coauthors{font-size:13px}.research-list-page{min-height:calc(100vh - 225px)}}
+@media(max-width:760px){.page-home .profile{min-height:0}}
 .publications-page{min-height:calc(100vh - 201px)}
 .publication-empty{padding-top:32px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
 .publication-empty .text-link{margin-top:15px;color:var(--accent)}
